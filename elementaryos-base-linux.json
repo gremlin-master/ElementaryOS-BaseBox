@@ -1,0 +1,93 @@
+{
+    "variables": {
+        "vm_name": "ElementaryOS",
+        "vm_passwd": "vagrant",
+        "elementaryos_iso_path": ""
+    },
+
+    "sensitive-variables": ["vm_passwd"],
+
+    "builders": [{
+        "type": "virtualbox-iso",
+        "guest_os_type": "Ubuntu_64",
+        "iso_url": "{{user `elementaryos_iso_path`}}",
+        "iso_checksum": "c6d33fd1db260d4e10e5ccbf38b09ba6287904c3388afa7db2de43736be7245d",
+        "guest_additions_mode": "attach",
+        "disk_size": "153600",
+        "iso_interface": "sata",
+        "vm_name": "{{user `vm_name`}}",
+        "output_directory": "output",
+        "vboxmanage": [
+            ["modifyvm", "{{.Name}}", "--vram", "16"],
+            ["modifyvm", "{{.Name}}", "--graphicscontroller", "VMSVGA"],
+            ["modifyvm", "{{.Name}}", "--memory", "4096"],
+            ["modifyvm", "{{.Name}}", "--vrde", "off"]
+        ],
+        "vboxmanage_post": [
+            ["modifyvm", "{{.Name}}", "--vram", "16"],
+            ["modifyvm", "{{.Name}}", "--graphicscontroller", "VMSVGA"],
+            ["modifyvm", "{{.Name}}", "--memory", "4096"],
+            ["modifyvm", "{{.Name}}", "--vrde", "off"]
+        ],
+        "boot_wait": "40s",
+        "boot_command":
+        [
+            "<wait2s><tab><tab><enter>",
+            "<wait3s><enter>",
+            "<wait3s><tab><tab><tab><tab><enter>",
+            "<wait3s><tab><tab><tab><tab><tab><enter>",
+            "<wait3s><tab><enter>",
+            "<wait3s><tab><tab><enter>",
+            "<wait3s>vagrant<tab><tab><tab>{{user `vm_passwd`}}<tab>{{user `vm_passwd`}}<tab><up><tab><tab><enter>",
+            "<wait10m30s><enter>",
+            "<wait25s><enter>",
+            "<wait25s><enter><enter><enter><enter><enter>",
+            "<wait5s><tab><tab><enter><tab><enter><tab><enter><tab><enter><tab><enter><tab><enter><tab><enter>",
+            "<wait7s><leftSuperOn><spacebar><leftSuperOff>",
+            "<wait3s>ter<wait2s><enter>",
+            "<wait5s>sudo apt update<enter>",
+            "<wait2s>{{user `vm_passwd`}}<enter>",
+            "<wait15s>sudo apt install wget openssh-server -y<enter>",
+            "<wait2m>mkdir ~/.ssh<enter>",
+            "<wait2s>sudo chmod 700 ~/.ssh<enter>",
+            "<wait2s>cd ~/.ssh<enter>",
+            "<wait2s>wget --no-check-certificate 'https://raw.github.com/mitchellh/vagrant/master/keys/vagrant.pub' -O authorized_keys<enter>",
+            "<wait3s>echo {{.SSHPublicKey}} >> ~/.ssh/authorized_keys<enter>",
+            "<wait3s>sudo chmod 600 ~/.ssh/authorized_keys<enter>",
+            "<wait3s>chown -R vagrant ~/.ssh<enter>",
+            "<wait3s>sudo systemctl restart sshd<enter><wait3s>"
+        ],
+        "communicator": "ssh",
+        "ssh_username": "vagrant",
+        "ssh_port": 22,
+        "shutdown_timeout": "1m",
+        "shutdown_command": "echo {{user `vm_passwd`}} | sudo -S shutdown -P now",
+        "export_opts": [
+            "--ovf20",
+            "--manifest",
+            "--vsys", "0",
+            "--description", "ElementaryOS",
+            "--version", "0.0.1"
+        ]
+    }],
+    "provisioners": [
+        {
+          "type": "shell",
+          "inline": [
+              "echo {{user `vm_passwd`}} | sudo -S apt install build-essential linux-headers-$(uname -r) dkms nfs-common -y",
+              "echo {{user `vm_passwd`}} | sudo -S mkdir /media/tmp",
+              "echo {{user `vm_passwd`}} | sudo -S mount /dev/sr1 /media/tmp",
+              "cd /media/tmp",
+              "echo {{user `vm_passwd`}} | sudo -S ./VBoxLinuxAdditions.run"
+          ]
+        }
+    ],
+    "post-processors": [
+        {
+          "type": "vagrant",
+          "name": "ElementaryOS",
+          "keep_input_artifact": false,
+          "output": "ElementaryOS.box"
+        }
+    ]
+}

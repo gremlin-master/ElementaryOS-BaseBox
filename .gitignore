@@ -1,0 +1,11 @@
+*.orig
+*.code-workspace
+*.log
+*.bak
+
+# Do not version the created basebox
+ElementaryOS.box
+
+Vagrantfile
+packer_cache
+.vagrant
