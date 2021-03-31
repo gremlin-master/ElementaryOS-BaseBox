@@ -11,7 +11,7 @@
         "type": "virtualbox-iso",
         "guest_os_type": "Ubuntu_64",
         "iso_url": "{{user `elementaryos_iso_path`}}",
-        "iso_checksum": "c6d33fd1db260d4e10e5ccbf38b09ba6287904c3388afa7db2de43736be7245d",
+        "iso_checksum": "439110ceadadd13683632ddd273095f72ee9b8d22a7569ac84c2fd1c4d920610",
         "guest_additions_mode": "attach",
         "disk_size": "153600",
         "iso_interface": "sata",
@@ -38,7 +38,7 @@
             "<wait3s><tab><tab><tab><tab><tab><enter>",
             "<wait3s><tab><enter>",
             "<wait3s><tab><tab><enter>",
-            "<wait3s>vagrant<tab><tab><tab>{{user `vm_passwd`}}<tab>{{user `vm_passwd`}}<tab><up><tab><tab><enter>",
+            "<wait5s>vagrant<tab><tab><tab>{{user `vm_passwd`}}<tab>{{user `vm_passwd`}}<tab><up><tab><tab><enter>",
             "<wait10m30s><enter>",
             "<wait25s><enter>",
             "<wait25s><enter><enter><enter><enter><enter>",
@@ -73,12 +73,20 @@
     "provisioners": [
         {
           "type": "shell",
+          "valid_exit_codes": [
+            0,
+            2
+          ],
           "inline": [
               "echo {{user `vm_passwd`}} | sudo -S apt install build-essential linux-headers-$(uname -r) dkms nfs-common -y",
               "echo {{user `vm_passwd`}} | sudo -S mkdir /media/tmp",
               "echo {{user `vm_passwd`}} | sudo -S mount /dev/sr1 /media/tmp",
               "cd /media/tmp",
-              "echo {{user `vm_passwd`}} | sudo -S ./VBoxLinuxAdditions.run"
+              "echo '---------------------------------------------------'",
+              "echo 'STARTING INSTALLATION OF VIRTUALBOX GUEST ADDITIONS'",
+              "echo '---------------------------------------------------'",
+              "echo {{user `vm_passwd`}} | sudo -S ./VBoxLinuxAdditions.run",
+              "echo $?"
           ]
         }
     ],

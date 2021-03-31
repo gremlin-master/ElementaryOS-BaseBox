@@ -5,7 +5,7 @@ The creation of the box fails in 60% of the builds which looks like timing issue
 
 Because of missing resources the development is currently only done for the windows packer file `elementaryos-base-windows.json`
 
-> :bulb: Example json files for packer are available here: <https://github.com/taliesins/packer-baseboxes>
+> :warning: The ElementaryOS installer needs a graphical user interface and because of this the creation of the basebox can't be run on headless systems
 
 ## Build the ElementaryOS basebox for virtualbox
 
@@ -22,12 +22,18 @@ However as we do not have an already available ElementaryOS VM or an ovf/ova fil
 1. Open the file `elementaryos-base-windows.json` in your prefered editor
 1. Locate the entry `iso_checksum` and provide the checksum for the downloaded iso file. It can be found in the elementary docs at the install section: <https://elementary.io/en/docs/installation#verify-your-download>
 1. Open a terminal and navigate to the folder with the `elementaryos-base-windows.json` file
-1. Make sure the packer file is valid: `packer validate -var "elementaryos_iso_path=F:\\setups\\isos\\elementaryos-5.1-stable.20200706.iso" elementaryos-base-windows.json` and hit enter  
+1. Create an environment variable for the path to your elementaryos iso file: `set "ELEMENTARY_ISO_PATH=C:\\Users\\dwolff\\Setups\\elementaryos-5.1-stable.20200814.iso"`
+1. Make sure the packer file is valid: `packer validate -var "elementaryos_iso_path=%ELEMENTARY_ISO_PATH%" elementaryos-base-windows.json` and hit enter  
 ![Template validated](images/template_validated.png)
-1. Build the ElementaryOS basebox: `packer build -var "elementaryos_iso_path=F:\\setups\\isos\\elementaryos-5.1-stable.20200706.iso" -force elementaryos-base-windows.json`  
+1. Build the ElementaryOS basebox: `packer build -var "elementaryos_iso_path=%ELEMENTARY_ISO_PATH%" -force elementaryos-base-windows.json`  
 ![Image creation in progress](images/packer_creating_vm.png)
 1. Packer will now start the vm and install the os  
 ![OS Installation in progress](images/packer_vm_os_installing.png)
+
+<!--
+Because of a bug in the Virtualbox Guest Additions we need to allow exit code 1
+https://stackoverflow.com/questions/25434139/vboxlinuxadditions-run-never-exits-with-0
+-->
 
 ### Test the basebox
 
@@ -104,20 +110,3 @@ References:
 
 * <https://www.packer.io/docs/provisioners/shell>
 * <https://www.vagrantup.com/docs/providers/virtualbox/boxes>
-
-<!--
-## Jenkins Buildjob
-
-1. Clone the project: git clone ssh://git@git.zit.local:2222/~dwolff/elementaryos-basebox.git
-1. Run packer from container and bind mount the cloned directory:
-    ```bash
-    docker run -it \
-        --mount type=bind,source=/absolute/path/to/test_docker_packer,target=/mnt/test_docker_packer \
-        hashicorp/packer:latest build \
-        /mnt/test_docker_packer/elementaryos-base-linux.json
-    ```
-
-References:
-
-* https://hub.docker.com/r/hashicorp/packer
--->
