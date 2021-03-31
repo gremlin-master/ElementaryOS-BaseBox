@@ -1,3 +1,4 @@
+<!-- omit in toc -->
 # Elementary Base Box
 
 Goal of this project is to create an elementary os base box for vagrant with [packer](https://www.packer.io).
@@ -7,15 +8,25 @@ Because of missing resources the development is currently only done for the wind
 
 > :warning: The ElementaryOS installer needs a graphical user interface and because of this the creation of the basebox can't be run on headless systems
 
-## Build the ElementaryOS basebox for virtualbox
+<!-- omit in toc -->
+## Table of Contents
+
+- [Build the basebox](#build-the-basebox)
+- [Test the basebox](#test-the-basebox)
+- [Upload the basebox](#upload-the-basebox)
+- [Explanations](#explanations)
+  - [SSH Configuration](#ssh-configuration)
+  - [Guest Additions](#guest-additions)
+
+## Build the basebox
 
 We start by creating the image for virtualbox. We do this because it is easier to test the created image that way. Once we decide that the image is good we will create a base box instead of a virtualbox image.
 
 VirtualBox images can be created from several sources:
 
-* An .iso file
-* An OVF/OVA file
-* An available virtual box vm
+- An .iso file
+- An OVF/OVA file
+- An available virtual box vm
 
 However as we do not have an already available ElementaryOS VM or an ovf/ova file we will use an iso image to create the basebox.
 
@@ -35,7 +46,7 @@ Because of a bug in the Virtualbox Guest Additions we need to allow exit code 1
 https://stackoverflow.com/questions/25434139/vboxlinuxadditions-run-never-exits-with-0
 -->
 
-### Test the basebox
+## Test the basebox
 
 1. Remove a maybe already existing basebox: `vagrant box remove ElementaryOS`
 1. Add the created box to vagrant with: `vagrant box add ElementaryOS .\ElementaryOS.box`  
@@ -59,7 +70,27 @@ https://stackoverflow.com/questions/25434139/vboxlinuxadditions-run-never-exits-
 
 References:
 
-* <https://stackoverflow.com/questions/22065698/how-to-add-a-downloaded-box-file-to-vagrant>
+- <https://stackoverflow.com/questions/22065698/how-to-add-a-downloaded-box-file-to-vagrant>
+
+## Upload the basebox
+
+1. Open Artifactory
+1. Click the vagrant repository in the repository list
+1. Click the **Deploy** button  
+![Click deploy button](images/artifactory_vagrant_repo_deploy.png)
+1. Drag&Drop the ElementaryOS.box file into the **Drop file or Select file** box  
+![Drag&Drop box file](images/artifactory_vagrant_repo_drag_drop_box.png)
+1. Wait until the .box file has been uploaded  
+![Upload box to artifactory](images/artifactory_vagrant_repo_upload_box.png)
+1. Insert the following informations:
+   - Name: ElementaryOS
+   - Provider: virtualbox
+   - Version: 1.0  
+   ![Insert box info](images/artifactory_vagrant_repo_upload_insert_info.png)
+1. Click the **Deploy** button to deploy the box to artifactory
+![Deploy box](images/artifactory_vagrant_repo_deploy_in_progress.png)
+1. Artifactory tells you when deployment has finished  
+![Deployment finished](images/artifactory_vagrant_repo_deploy_finished.png)
 
 ## Explanations
 
@@ -83,7 +114,7 @@ Unluckily for us ElementaryOS doesn't support a preseed file. Because of this we
 
 You can see that all these steps are done in the boot_command:
 
-```
+```vagrant
 "<wait15s>sudo apt install wget openssh-server -y<enter>",
 "<wait2m>mkdir ~/.ssh<enter>",
 "<wait2s>sudo chmod 700 ~/.ssh<enter>",
@@ -97,10 +128,10 @@ You can see that all these steps are done in the boot_command:
 
 References:
 
-* <https://www.packer.io/docs/communicators/ssh>
-* <https://www.packer.io/guides/automatic-operating-system-installs>
-* <https://github.com/hashicorp/vagrant/tree/master/keys>
-* <https://superuser.com/questions/287651/can-i-have-multiple-ssh-keys-in-my-ssh-folder>
+- <https://www.packer.io/docs/communicators/ssh>
+- <https://www.packer.io/guides/automatic-operating-system-installs>
+- <https://github.com/hashicorp/vagrant/tree/master/keys>
+- <https://superuser.com/questions/287651/can-i-have-multiple-ssh-keys-in-my-ssh-folder>
 
 ### Guest Additions
 
@@ -108,5 +139,5 @@ Install necessary libraries for guest additions and Vagrant NFS Share: `sudo apt
 
 References:
 
-* <https://www.packer.io/docs/provisioners/shell>
-* <https://www.vagrantup.com/docs/providers/virtualbox/boxes>
+- <https://www.packer.io/docs/provisioners/shell>
+- <https://www.vagrantup.com/docs/providers/virtualbox/boxes>
