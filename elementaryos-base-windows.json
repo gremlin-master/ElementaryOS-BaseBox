@@ -82,11 +82,8 @@
               "echo {{user `vm_passwd`}} | sudo -S mkdir /media/tmp",
               "echo {{user `vm_passwd`}} | sudo -S mount /dev/sr1 /media/tmp",
               "cd /media/tmp",
-              "echo '---------------------------------------------------'",
-              "echo 'STARTING INSTALLATION OF VIRTUALBOX GUEST ADDITIONS'",
-              "echo '---------------------------------------------------'",
               "echo {{user `vm_passwd`}} | sudo -S ./VBoxLinuxAdditions.run",
-              "echo $?"
+              "echo 'vagrant ALL=(ALL) NOPASSWD:ALL' | sudo tee /etc/sudoers.d/vagrant"
           ]
         }
     ],

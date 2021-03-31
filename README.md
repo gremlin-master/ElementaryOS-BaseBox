@@ -13,7 +13,6 @@ Because of missing resources the development is currently only done for the wind
 
 - [Build the basebox](#build-the-basebox)
 - [Test the basebox](#test-the-basebox)
-- [Upload the basebox](#upload-the-basebox)
 - [Explanations](#explanations)
   - [SSH Configuration](#ssh-configuration)
   - [Guest Additions](#guest-additions)
@@ -71,26 +70,6 @@ https://stackoverflow.com/questions/25434139/vboxlinuxadditions-run-never-exits-
 References:
 
 - <https://stackoverflow.com/questions/22065698/how-to-add-a-downloaded-box-file-to-vagrant>
-
-## Upload the basebox
-
-1. Open Artifactory
-1. Click the vagrant repository in the repository list
-1. Click the **Deploy** button  
-![Click deploy button](images/artifactory_vagrant_repo_deploy.png)
-1. Drag&Drop the ElementaryOS.box file into the **Drop file or Select file** box  
-![Drag&Drop box file](images/artifactory_vagrant_repo_drag_drop_box.png)
-1. Wait until the .box file has been uploaded  
-![Upload box to artifactory](images/artifactory_vagrant_repo_upload_box.png)
-1. Insert the following informations:
-   - Name: ElementaryOS
-   - Provider: virtualbox
-   - Version: 1.0  
-   ![Insert box info](images/artifactory_vagrant_repo_upload_insert_info.png)
-1. Click the **Deploy** button to deploy the box to artifactory
-![Deploy box](images/artifactory_vagrant_repo_deploy_in_progress.png)
-1. Artifactory tells you when deployment has finished  
-![Deployment finished](images/artifactory_vagrant_repo_deploy_finished.png)
 
 ## Explanations
 
