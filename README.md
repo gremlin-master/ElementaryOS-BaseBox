@@ -32,6 +32,7 @@ However as we do not have an already available ElementaryOS VM or an ovf/ova fil
 1. Open the file `elementaryos-base-windows.json` in your prefered editor
 1. Locate the entry `iso_checksum` and provide the checksum for the downloaded iso file. It can be found in the elementary docs at the install section: <https://elementary.io/en/docs/installation#verify-your-download>
 1. Open a terminal and navigate to the folder with the `elementaryos-base-windows.json` file
+1. Add packer isn't in the path add it to the PATH environment variable: `set "PATH=%PATH%;C:\Program Files\Packer"`
 1. Create an environment variable for the path to your elementaryos iso file: `set "ELEMENTARY_ISO_PATH=C:\\Users\\dwolff\\Setups\\elementaryos-5.1-stable.20200814.iso"`
 1. Make sure the packer file is valid: `packer validate -var "elementaryos_iso_path=%ELEMENTARY_ISO_PATH%" elementaryos-base-windows.json` and hit enter  
 ![Template validated](images/template_validated.png)
