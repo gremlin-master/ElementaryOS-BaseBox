@@ -45,8 +45,8 @@
             "<wait5s><tab><tab><enter><tab><enter><tab><enter><tab><enter><tab><enter><tab><enter><tab><enter>",
             "<wait7s><leftSuperOn><spacebar><leftSuperOff>",
             "<wait3s>ter<wait2s><enter>",
+            "<wait5s>echo {{user `vm_passwd`}} | sudo -S sh -c 'echo \"vagrant ALL=(ALL) NOPASSWD:ALL\" | tee /etc/sudoers.d/vagrant'<enter>",
             "<wait5s>sudo apt update<enter>",
-            "<wait2s>{{user `vm_passwd`}}<enter>",
             "<wait15s>sudo apt install wget openssh-server -y<enter>",
             "<wait2m>mkdir ~/.ssh<enter>",
             "<wait2s>sudo chmod 700 ~/.ssh<enter>",
@@ -61,7 +61,7 @@
         "ssh_username": "vagrant",
         "ssh_port": 22,
         "shutdown_timeout": "1m",
-        "shutdown_command": "echo {{user `vm_passwd`}} | sudo -S shutdown -P now",
+        "shutdown_command": "sudo shutdown -P now",
         "export_opts": [
             "--ovf20",
             "--manifest",
@@ -78,12 +78,11 @@
             2
           ],
           "inline": [
-              "echo {{user `vm_passwd`}} | sudo -S apt install build-essential linux-headers-$(uname -r) dkms nfs-common -y",
-              "echo {{user `vm_passwd`}} | sudo -S mkdir /media/tmp",
-              "echo {{user `vm_passwd`}} | sudo -S mount /dev/sr1 /media/tmp",
+              "sudo apt install build-essential linux-headers-$(uname -r) dkms nfs-common -y",
+              "sudo mkdir /media/tmp",
+              "sudo mount /dev/sr1 /media/tmp",
               "cd /media/tmp",
-              "echo {{user `vm_passwd`}} | sudo -S ./VBoxLinuxAdditions.run",
-              "echo 'vagrant ALL=(ALL) NOPASSWD:ALL' | sudo tee /etc/sudoers.d/vagrant"
+              "sudo ./VBoxLinuxAdditions.run"
           ]
         }
     ],
