@@ -85,7 +85,7 @@ Unluckily for us ElementaryOS doesn't support a preseed file. Because of this we
 1. Install the openssh-server and wget which is needed to download the current vagrant key: `sudo apt install wget openssh-server -y`
 1. Create the ssh directory for the vagrant user: `mkdir ~/.ssh`
 1. Set the correct access rights for the ssh directory: `sudo chmod 700 ~/.ssh`
-1. Chante to the ssh directory: `cd ~/.ssh`
+1. Change to the ssh directory: `cd ~/.ssh`
 1. Add the current vagrant key to the authorized_keys: `wget --no-check-certificate 'https://raw.github.com/mitchellh/vagrant/master/keys/vagrant.pub' -O authorized_keys`
 1. Add the public key of the ephemeral ssh keypair that packer created automatically: `echo {{.SSHPublicKey}} >> ~/.ssh/authorized_keys`
 1. Set the correct access rights for the authorized_keys file: `sudo chmod 600 ~/.ssh/authorized_keys`
