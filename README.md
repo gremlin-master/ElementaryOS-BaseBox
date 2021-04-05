@@ -58,7 +58,7 @@ https://stackoverflow.com/questions/25434139/vboxlinuxadditions-run-never-exits-
 1. Remove a maybe already existing basebox: `vagrant box remove ElementaryOS`
 1. Add the created box to vagrant with: `vagrant box add ElementaryOS .\ElementaryOS.box`  
 ![Adding the box to vagrant](images/vagrant_add_box.png)
-1. Create a new vagrant project with the ElementaryOS box as base: `vagrant init -m ElementaryOS`
+1. Create a new vagrant project with the ElementaryOS basebox: `vagrant init -m ElementaryOS`
 1. Open the vagrantfile
 1. Add the following:
 
@@ -70,7 +70,7 @@ https://stackoverflow.com/questions/25434139/vboxlinuxadditions-run-never-exits-
     ```
 
 1. Start the machine: `vagrant up`
-1. You should have a running ElementaryOS
+1. You should get a running ElementaryOS
 ![BaseBox Running](images/basebox_running.png)
 1. With vagrant ssh access enabled
 ![Vagrant ssh access](images/basebox_ssh_access.png)
