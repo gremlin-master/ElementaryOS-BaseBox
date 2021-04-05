@@ -1,25 +1,32 @@
 <!-- omit in toc -->
-# Elementary Base Box
+# ElementaryOS Basebox
 
-Goal of this project is to create an elementary os base box for vagrant with [packer](https://www.packer.io).
-The creation of the box fails in 60% of the builds which looks like timing issues because it succeeds in the other 40% without changing anything.
-
-Because of missing resources the development is currently only done for the windows packer file `elementaryos-base-windows.json`
-
-> :warning: The ElementaryOS installer needs a graphical user interface and because of this the creation of the basebox can't be run on headless systems
+Goal of this project is to create a vagrant basebox with ElementaryOS. This basebox can be used for setting up developer VMs.
 
 <!-- omit in toc -->
-## Table of Contents
+# Table of Contents
 
+- [Status](#status)
+- [Used technology](#used-technology)
 - [Build the basebox](#build-the-basebox)
 - [Test the basebox](#test-the-basebox)
 - [Explanations](#explanations)
-  - [SSH Configuration](#ssh-configuration)
-  - [Guest Additions](#guest-additions)
+  - [SSH configuration](#ssh-configuration)
+  - [Guest additions](#guest-additions)
 
-## Build the basebox
+# Status
 
-We start by creating the image for virtualbox. We do this because it is easier to test the created image that way. Once we decide that the image is good we will create a base box instead of a virtualbox image.
+Because of missing resources the development is currently only done for the windows packer file `elementaryos-base-windows.json`
+
+The creation of the box fails in 60% of the builds which looks like timing issues because it succeeds in the other 40% without changing anything.
+
+# Used technology
+
+We use [packer](https://www.packer.io) for the creation of the basebox.
+
+# Build the basebox
+
+> :warning: The ElementaryOS installer needs a graphical user interface and because of this the creation of the basebox can't be run on headless systems
 
 VirtualBox images can be created from several sources:
 
@@ -46,7 +53,7 @@ Because of a bug in the Virtualbox Guest Additions we need to allow exit code 1
 https://stackoverflow.com/questions/25434139/vboxlinuxadditions-run-never-exits-with-0
 -->
 
-## Test the basebox
+# Test the basebox
 
 1. Remove a maybe already existing basebox: `vagrant box remove ElementaryOS`
 1. Add the created box to vagrant with: `vagrant box add ElementaryOS .\ElementaryOS.box`  
@@ -72,9 +79,9 @@ References:
 
 - <https://stackoverflow.com/questions/22065698/how-to-add-a-downloaded-box-file-to-vagrant>
 
-## Explanations
+# Explanations
 
-### SSH Configuration
+## SSH configuration
 
 As stated by the packer documentation the initial ssh setup needs to be done by the boot command.
 
@@ -113,7 +120,7 @@ References:
 - <https://github.com/hashicorp/vagrant/tree/master/keys>
 - <https://superuser.com/questions/287651/can-i-have-multiple-ssh-keys-in-my-ssh-folder>
 
-### Guest Additions
+## Guest additions
 
 Install necessary libraries for guest additions and Vagrant NFS Share: `sudo apt-get -y -q install linux-headers-$(uname -r) build-essential dkms nfs-common`
 
